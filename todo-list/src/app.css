@@ -36,6 +36,20 @@ form button {
   margin-top: 1rem;
 }
 
+form .datos input {
+  background-color: rgb(233, 230, 230);
+}
+
 table thead tr th {
   text-transform: uppercase;
+  text-align: center;
+}
+
+.encabezado {
+  padding-left: 1rem;
+}
+
+table tbody tr td {
+  text-align: center;
+  font-size: 20px;
 }

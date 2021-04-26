@@ -13,10 +13,20 @@ export class ToDoList extends React.Component {
       pais: '',
       visible: true,
     };
+
+    //Escucho evento press key enter
+    document.addEventListener('keypress', e => {
+      if (this.state.visible === false && e.code === 'Enter') {
+        this.addItem();
+      }
+    });
   }
 
+  handleClick() {
+    console.log('this is:', this);
+  }
   //Agrego Item al array
-  addItem(e) {
+  addItem() {
     const form = {
       trabajo: this.state.trabajo,
       empresa: this.state.empresa,
@@ -100,7 +110,7 @@ export class ToDoList extends React.Component {
   render() {
     return (
       <>
-        <form onSubmit={this.addItem}>
+        <form>
           <div className="datos mb-3">
             <label htmlFor="trabajo" className="form-label">
               Trabajo:
@@ -174,7 +184,7 @@ export class ToDoList extends React.Component {
 
         <hr />
 
-        <h1>Listado de trabajos</h1>
+        <h1 className="encabezado">Listado de trabajos</h1>
 
         <table className="table table-dark table-striped">
           <thead>
