@@ -38,9 +38,6 @@ export class ToDoList extends React.Component {
   addValue(e) {
     const htmlParent = e.target.parentElement.querySelector('input');
 
-    //Valido contenido
-    this.btnVisible();
-
     if (htmlParent.id === 'trabajo') {
       this.setState({
         trabajo: htmlParent.value || '',
@@ -61,22 +58,29 @@ export class ToDoList extends React.Component {
         pais: htmlParent.value || '',
       });
     }
+
+    //Valido contenido
+    this.btnVisible(e);
   }
 
   //Valido datos del formulario.
-  btnVisible() {
-    if (
-      this.state.trabajo.length > 0 &&
-      this.state.empresa.length > 0 &&
-      this.state.ciudad.length > 0 &&
-      this.state.pais.length > 0
-    ) {
+  btnVisible(e) {
+    let inputsHtml = [];
+    inputsHtml = e.target.parentElement.parentElement.querySelectorAll(
+      '.datos input',
+    );
+
+    const input = Object.values(inputsHtml).some(
+      input => input.value.length === 0,
+    );
+
+    if (input) {
       this.setState({
-        visible: false,
+        visible: true,
       });
     } else {
       this.setState({
-        visible: true,
+        visible: false,
       });
     }
   }
@@ -106,6 +110,7 @@ export class ToDoList extends React.Component {
               id="trabajo"
               className="form-control"
               onChange={e => this.addValue(e)}
+              onKeyDown={e => this.addValue(e)}
               value={this.state.trabajo}
               required
             />
@@ -120,6 +125,7 @@ export class ToDoList extends React.Component {
               id="empresa"
               className="form-control"
               onChange={e => this.addValue(e)}
+              onKeyDown={e => this.addValue(e)}
               value={this.state.empresa}
               required
             />
@@ -134,6 +140,7 @@ export class ToDoList extends React.Component {
               id="ciudad"
               className="form-control"
               onChange={e => this.addValue(e)}
+              onKeyDown={e => this.addValue(e)}
               value={this.state.ciudad}
               required
             />
@@ -148,6 +155,7 @@ export class ToDoList extends React.Component {
               id="pais"
               className="form-control"
               onChange={e => this.addValue(e)}
+              onKeyDown={e => this.addValue(e)}
               value={this.state.pais}
               required
             />
