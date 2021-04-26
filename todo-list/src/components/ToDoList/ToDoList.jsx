@@ -4,33 +4,200 @@ export class ToDoList extends React.Component {
   // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
-    const valuez = [];
+
+    this.state = {
+      tasks: [],
+      trabajo: '',
+      empresa: '',
+      ciudad: '',
+      pais: '',
+      visible: true,
+    };
   }
 
+  //Agrego Item al array
+  addItem(e) {
+    const form = {
+      trabajo: this.state.trabajo,
+      empresa: this.state.empresa,
+      ciudad: this.state.ciudad,
+      pais: this.state.pais,
+    };
+
+    this.setState({
+      tasks: [...this.state.tasks, form],
+      trabajo: '',
+      empresa: '',
+      ciudad: '',
+      pais: '',
+      visible: true,
+    });
+  }
+
+  //Obtengo item del imput
+  addValue(e) {
+    const htmlParent = e.target.parentElement.querySelector('input');
+
+    //Valido contenido
+    this.btnVisible();
+
+    if (htmlParent.id === 'trabajo') {
+      this.setState({
+        trabajo: htmlParent.value || '',
+      });
+    }
+    if (htmlParent.id === 'empresa') {
+      this.setState({
+        empresa: htmlParent.value || '',
+      });
+    }
+    if (htmlParent.id === 'ciudad') {
+      this.setState({
+        ciudad: htmlParent.value || '',
+      });
+    }
+    if (htmlParent.id === 'pais') {
+      this.setState({
+        pais: htmlParent.value || '',
+      });
+    }
+  }
+
+  //Valido datos del formulario.
+  btnVisible() {
+    if (
+      this.state.trabajo.length > 0 &&
+      this.state.empresa.length > 0 &&
+      this.state.ciudad.length > 0 &&
+      this.state.pais.length > 0
+    ) {
+      this.setState({
+        visible: false,
+      });
+    } else {
+      this.setState({
+        visible: true,
+      });
+    }
+  }
+
+  //Elimino Item
+  deleteItem(id) {
+    const items = this.state.tasks;
+
+    items.splice(id, 1);
+
+    this.setState({
+      tasks: [...items],
+    });
+  }
+
+  //Recargo pagina
   render() {
     return (
       <>
-        <ul>
-          <li>Hola mundo</li>
-        </ul>
+        <form onSubmit={this.addItem}>
+          <div className="datos mb-3">
+            <label htmlFor="trabajo" className="form-label">
+              Trabajo:
+            </label>
+            <input
+              type="text"
+              id="trabajo"
+              className="form-control"
+              onChange={e => this.addValue(e)}
+              value={this.state.trabajo}
+              required
+            />
+          </div>
 
-        <div className="container">
-          <label htmlFor="trabajo">Trabajo</label>
-          <input type="text" id="trabajo" />
-        </div>
+          <div className="datos mb-3">
+            <label htmlFor="empresa" className="form-label">
+              Empresa:
+            </label>
+            <input
+              type="text"
+              id="empresa"
+              className="form-control"
+              onChange={e => this.addValue(e)}
+              value={this.state.empresa}
+              required
+            />
+          </div>
 
-        <br />
-        <div className="container">
-          <input type="text" id="" />
-        </div>
-        <br />
+          <div className="datos mb-3">
+            <label htmlFor="ciudad" className="form-label">
+              Ciudad:
+            </label>
+            <input
+              type="text"
+              id="ciudad"
+              className="form-control"
+              onChange={e => this.addValue(e)}
+              value={this.state.ciudad}
+              required
+            />
+          </div>
 
-        <div className="container">
-          <input type="text" id="" />
-        </div>
+          <div className="datos mb-3">
+            <label htmlFor="pais" className="form-label">
+              Pais:
+            </label>
+            <input
+              type="text"
+              id="pais"
+              className="form-control"
+              onChange={e => this.addValue(e)}
+              value={this.state.pais}
+              required
+            />
+          </div>
 
-        <br />
-        <button>Agregar</button>
+          <div className="d-grid gap-2 col-6 mx-auto">
+            <button
+              onClick={() => this.addItem()}
+              disabled={this.state.visible}
+              className="btn btn-primary"
+              type="button">
+              Agregar
+            </button>
+          </div>
+        </form>
+
+        <hr />
+
+        <h1>Listado de trabajos</h1>
+
+        <table className="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Trabajo</th>
+              <th>Empresa</th>
+              <th>Cidudad</th>
+              <th>Pais</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.tasks.map((task, index) => {
+              return (
+                <tr>
+                  <td>{task.trabajo}</td>
+                  <td>{task.empresa}</td>
+                  <td>{task.ciudad}</td>
+                  <td>{task.pais}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={index => this.deleteItem(index)}>
+                      <i className="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </>
     );
   }
