@@ -22,9 +22,6 @@ export class ToDoList extends React.Component {
     });
   }
 
-  handleClick() {
-    console.log('this is:', this);
-  }
   //Agrego Item al array
   addItem() {
     const form = {
@@ -34,8 +31,11 @@ export class ToDoList extends React.Component {
       pais: this.state.pais,
     };
 
+    //Cargo array con lista para app.js
+    this.props.actualizaTasks(...this.state.tasks, form);
+
     this.setState({
-      tasks: [...this.state.tasks, form],
+      tasks: [],
       trabajo: '',
       empresa: '',
       ciudad: '',
@@ -47,36 +47,14 @@ export class ToDoList extends React.Component {
   //Obtengo item del imput
   addValue(e) {
     const htmlParent = e.target.parentElement.querySelector('input');
-
-    if (htmlParent.id === 'trabajo') {
-      this.setState({
-        trabajo: htmlParent.value || '',
-      });
-    }
-    if (htmlParent.id === 'empresa') {
-      this.setState({
-        empresa: htmlParent.value || '',
-      });
-    }
-    if (htmlParent.id === 'ciudad') {
-      this.setState({
-        ciudad: htmlParent.value || '',
-      });
-    }
-    if (htmlParent.id === 'pais') {
-      this.setState({
-        pais: htmlParent.value || '',
-      });
-    }
-
+    this.setStateDatos(htmlParent.id, htmlParent.value);
     //Valido contenido
     this.btnVisible(e);
   }
 
   //Valido datos del formulario.
   btnVisible(e) {
-    let inputsHtml = [];
-    inputsHtml = e.target.parentElement.parentElement.querySelectorAll(
+    let inputsHtml = e.target.parentElement.parentElement.querySelectorAll(
       '.datos input',
     );
 
@@ -85,24 +63,16 @@ export class ToDoList extends React.Component {
     );
 
     if (input) {
-      this.setState({
-        visible: true,
-      });
+      this.setStateDatos('visible', true);
     } else {
-      this.setState({
-        visible: false,
-      });
+      this.setStateDatos('visible', false);
     }
   }
 
-  //Elimino Item
-  deleteItem(id) {
-    const items = this.state.tasks;
-
-    items.splice(id, 1);
-
+  //Metodo para actualizar datos
+  setStateDatos(clave, valor) {
     this.setState({
-      tasks: [...items],
+      [clave]: valor,
     });
   }
 
@@ -171,7 +141,7 @@ export class ToDoList extends React.Component {
             />
           </div>
 
-          <div className="d-grid gap-2 col-6 mx-auto">
+          <div className="d-grid gap-2 col-2 mx-auto">
             <button
               onClick={() => this.addItem()}
               disabled={this.state.visible}
@@ -181,41 +151,6 @@ export class ToDoList extends React.Component {
             </button>
           </div>
         </form>
-
-        <hr />
-
-        <h1 className="encabezado">Listado de trabajos</h1>
-
-        <table className="table table-dark table-striped">
-          <thead>
-            <tr>
-              <th>Trabajo</th>
-              <th>Empresa</th>
-              <th>Cidudad</th>
-              <th>Pais</th>
-              <th>Accion</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.tasks.map((task, index) => {
-              return (
-                <tr>
-                  <td>{task.trabajo}</td>
-                  <td>{task.empresa}</td>
-                  <td>{task.ciudad}</td>
-                  <td>{task.pais}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={index => this.deleteItem(index)}>
-                      <i className="fa fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
       </>
     );
   }
