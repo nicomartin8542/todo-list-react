@@ -21,10 +21,20 @@ header {
   text-align: center;
   padding: 10px;
   width: 100%;
-  margin-bottom: 1rem;
+}
+
+main {
+  background: rgb(201, 201, 205);
+  background: linear-gradient(
+    90deg,
+    rgba(201, 201, 205, 1) 100%,
+    rgba(162, 196, 241, 1) 100%
+  );
 }
 form {
-  padding: 3rem;
+  padding: 2rem;
+  width: 60%;
+  background-color: white;
 }
 
 form label {
@@ -33,11 +43,12 @@ form label {
 }
 
 form button {
-  margin-top: 1rem;
+  margin: 0 !important;
+  padding: 0;
 }
 
 form .datos input {
-  background-color: rgb(233, 230, 230);
+  background-color: rgb(241, 239, 239);
 }
 
 table thead tr th {
@@ -46,10 +57,31 @@ table thead tr th {
 }
 
 .encabezado {
-  padding-left: 1rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+hr {
+  margin: 0rem;
 }
 
 table tbody tr td {
   text-align: center;
   font-size: 20px;
+}
+
+.sinResultados {
+  background: rgb(41, 41, 42);
+  background: linear-gradient(
+    90deg,
+    rgba(41, 41, 42, 1) 100%,
+    rgba(162, 196, 241, 1) 100%
+  );
+}
+
+.sinResultados p {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 25px;
+  color: white;
 }
