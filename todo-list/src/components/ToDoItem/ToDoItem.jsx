@@ -81,6 +81,7 @@ export class ToDoItem extends React.Component {
                 type="text"
                 id="trabajo"
                 className="form-control"
+                placeholder="Trabajo"
                 onChange={e => this.addValue(e)}
                 onKeyDown={e => this.addValue(e)}
                 value={this.state.trabajo}
@@ -96,6 +97,7 @@ export class ToDoItem extends React.Component {
                 type="text"
                 id="empresa"
                 className="form-control"
+                placeholder="Empresa"
                 onChange={e => this.addValue(e)}
                 onKeyDown={e => this.addValue(e)}
                 value={this.state.empresa}
@@ -111,6 +113,7 @@ export class ToDoItem extends React.Component {
                 type="text"
                 id="ciudad"
                 className="form-control"
+                placeholder="Ciudad"
                 onChange={e => this.addValue(e)}
                 onKeyDown={e => this.addValue(e)}
                 value={this.state.ciudad}
@@ -126,6 +129,7 @@ export class ToDoItem extends React.Component {
                 type="text"
                 id="pais"
                 className="form-control"
+                placeholder="Pais"
                 onChange={e => this.addValue(e)}
                 onKeyDown={e => this.addValue(e)}
                 value={this.state.pais}
