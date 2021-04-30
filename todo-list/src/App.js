@@ -1,12 +1,13 @@
-import React from 'react';
-import { ToDoList } from './components/ToDoList/ToDoList';
+import React, { Fragment } from 'react';
+import { ToDo } from './components/ToDo';
 
-function App() {
-  return (
-    <>
-      <ToDoList />
-    </>
-  );
-}
+//Importo css
+import './app.css';
+
+const App = () => (
+  <Fragment>
+    <ToDo />
+  </Fragment>
+);
 
 export default App;

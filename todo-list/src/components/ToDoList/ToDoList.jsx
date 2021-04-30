@@ -1,36 +1,48 @@
-import React from 'react';
-
-export class ToDoList extends React.Component {
-  // eslint-disable-next-line no-useless-constructor
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+export const ToDoList = ({ listado, deleteItem }) => {
+  if (listado.length !== 0) {
     return (
       <>
-        <ul>
-          <li>Hola mundo</li>
-        </ul>
-
-        <div className="container">
-          <label htmlFor="trabajo">Trabajo</label>
-          <input type="text" id="trabajo" />
+        <hr />
+        <table className="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Trabajo</th>
+              <th>Empresa</th>
+              <th>Cidudad</th>
+              <th>Pais</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listado.map((task, index) => {
+              const { trabajo, empresa, ciudad, pais } = task;
+              return (
+                <tr key={index}>
+                  <td>{trabajo}</td>
+                  <td>{empresa}</td>
+                  <td>{ciudad}</td>
+                  <td>{pais}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={index => deleteItem(index)}>
+                      <i className="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div className="sinResultados">
+          <p className="encabezado">No hay resultados</p>
         </div>
-
-        <br />
-        <div className="container">
-          <input type="text" id="" />
-        </div>
-        <br />
-
-        <div className="container">
-          <input type="text" id="" />
-        </div>
-
-        <br />
-        <button>Agregar</button>
       </>
     );
   }
-}
+};
