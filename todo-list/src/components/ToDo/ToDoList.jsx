@@ -1,8 +1,7 @@
 export const ToDoList = ({ listado, deleteItem }) => {
   if (listado.length !== 0) {
     return (
-      <>
-        <hr />
+      <div className="table-responsive table-container ">
         <table className="table table-dark table-striped">
           <thead>
             <tr>
@@ -15,9 +14,9 @@ export const ToDoList = ({ listado, deleteItem }) => {
           </thead>
           <tbody>
             {listado.map((task, index) => {
-              const { trabajo, empresa, ciudad, pais } = task;
+              const { trabajo, empresa, ciudad, pais, id } = task;
               return (
-                <tr key={index}>
+                <tr key={id}>
                   <td>{trabajo}</td>
                   <td>{empresa}</td>
                   <td>{ciudad}</td>
@@ -25,7 +24,7 @@ export const ToDoList = ({ listado, deleteItem }) => {
                   <td>
                     <button
                       className="btn btn-danger"
-                      onClick={index => deleteItem(index)}>
+                      onClick={index => deleteItem(id)}>
                       <i className="fa fa-trash"></i>
                     </button>
                   </td>
@@ -34,12 +33,12 @@ export const ToDoList = ({ listado, deleteItem }) => {
             })}
           </tbody>
         </table>
-      </>
+      </div>
     );
   } else {
     return (
       <>
-        <div className="sinResultados">
+        <div className="sinResultados table-container">
           <p className="encabezado">No hay resultados</p>
         </div>
       </>
