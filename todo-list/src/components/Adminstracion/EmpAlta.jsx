@@ -1,23 +1,19 @@
-import React from 'react';
-import { validarImputForm, enterHandler } from '../../utils/util';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { validarImputForm } from '../../utils/util';
 
-export class PaisesAlta extends React.Component {
+export class EmpAlta extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      pais: '',
+      empresa: '',
       visible: true,
     };
-
-    //Escucho evento press key enter
-    enterHandler(this.state.visible, this.addItem);
   }
 
   //Obtengo item del imput
   addValue(e) {
-    const htmlParent = e.target.parentElement.querySelector('input');
-    this.setStateDatos(htmlParent.id, htmlParent.value);
+    this.setStateDatos(e.target.id, e.target.value);
     //Valido contenido
     this.btnVisible(e);
   }
@@ -32,11 +28,11 @@ export class PaisesAlta extends React.Component {
   }
 
   //Metodo para actualizar datos del state
-  setStateDatos(clave, valor) {
+  setStateDatos = (clave, valor) => {
     this.setState({
       [clave]: valor,
     });
-  }
+  };
 
   //Cargo datos del formulario
   addItem = e => {
@@ -44,13 +40,15 @@ export class PaisesAlta extends React.Component {
       e.preventDefault();
     }
 
-    const paisesOjb = {
+    const { empresa } = this.state;
+
+    const empresaObj = {
       id: new Date().getTime(),
-      nombre: this.state.pais,
+      nombre: empresa,
     };
 
-    this.props.actualizarPaises(paisesOjb);
-    this.setStateDatos('pais', '');
+    this.props.actualizarEmp(empresaObj);
+    this.setStateDatos('empresa', '');
     this.setStateDatos('visible', true);
   };
 
@@ -60,32 +58,35 @@ export class PaisesAlta extends React.Component {
         <form onSubmit={this.addItem}>
           <div>
             <h2 className="encabezado">
-              Agregar Paises <hr />
+              Agregar Empresas <hr />
             </h2>
           </div>
           <div className="datos mb-3">
-            <label htmlFor="pais" className="form-label">
-              Pais:
+            <label htmlFor="empresa" className="form-label">
+              Empresa:
             </label>
             <input
               type="text"
-              id="pais"
+              id="empresa"
               className="form-control"
-              placeholder="Pais"
+              placeholder="Empresa"
               onChange={e => this.addValue(e)}
               onKeyDown={e => this.addValue(e)}
-              value={this.state.pais}
+              value={this.state.empresa}
               required
             />
           </div>
 
-          <div className="d-grid gap-2 col-12 mx-auto">
+          <div className="d-grid gap-2">
             <button
               disabled={this.state.visible}
               className="btn btn-primary"
               type="submit">
               Agregar
             </button>
+            <Link className="btn btn-success" to="/empresas">
+              Volver
+            </Link>
           </div>
         </form>
 
@@ -94,20 +95,21 @@ export class PaisesAlta extends React.Component {
             <table className="table table-dark table-striped">
               <thead>
                 <tr>
-                  <th>Pais</th>
+                  <th>Empresa</th>
                   <th>Accion</th>
                 </tr>
               </thead>
               <tbody>
-                {this.props.listado.map((p, index) => {
-                  const { nombre, id } = p;
+                {this.props.listado.map(e => {
+                  const { nombre, id } = e;
+
                   return (
                     <tr key={id}>
                       <td>{nombre}</td>
                       <td>
                         <button
                           className="btn btn-danger"
-                          onClick={() => this.props.eliminarPais(id)}>
+                          onClick={() => this.props.eliminarEmp(id)}>
                           <i className="fa fa-trash"></i>
                         </button>
                       </td>

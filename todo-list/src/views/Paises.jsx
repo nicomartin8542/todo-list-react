@@ -35,11 +35,15 @@ export class Paises extends React.Component {
 
   //Elimino Paises
   eliminarPais = id => {
+    //Busco si el pais pertenece a una ciudad
     const ciudadPais = this.state.ciudades.some(c => c.pais === id);
+
+    //Filtro para eliminar el registro
     let items = JSON.parse(localStorage.getItem('paises')).filter(
       item => item.id !== id,
     );
 
+    //Muestro error
     if (ciudadPais) {
       alertaError(
         'El pais que desea eliminar esta asociado a una ciudad. Verifique y vuelva a intentar',
@@ -47,6 +51,7 @@ export class Paises extends React.Component {
       return;
     }
 
+    //Elimino registro
     alertaBorrar().then(resp => {
       if (resp) {
         this.setState({

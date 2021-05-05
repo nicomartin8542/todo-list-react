@@ -8,9 +8,9 @@ export class ToDoItem extends React.Component {
 
     this.state = {
       trabajo: '',
-      empresa: '',
-      ciudad: '',
-      pais: '',
+      empresa: 0,
+      ciudad: 0,
+      ciudades: [],
       visible: true,
     };
   }
@@ -21,13 +21,14 @@ export class ToDoItem extends React.Component {
       e.preventDefault();
     }
 
-    const { trabajo, empresa, ciudad, pais } = this.state;
+    const { trabajo, empresa, ciudad } = this.state;
+
+    //Creo objeto con los datos cargados
     const form = {
       id: new Date().getTime(),
       trabajo: trabajo,
-      empresa: empresa,
-      ciudad: ciudad,
-      pais: pais,
+      empresa: Number(empresa),
+      ciudad: Number(ciudad),
     };
 
     //Cargo array con lista para app.js
@@ -35,19 +36,44 @@ export class ToDoItem extends React.Component {
 
     this.setState({
       trabajo: '',
-      empresa: '',
-      ciudad: '',
-      pais: '',
-      visible: true,
+      empresa: 0,
+      ciudad: 0,
+      ciudades: [],
     });
+
+    //Reseto Formulario
+    e.target.reset();
+    //Valido contenido
+    this.btnVisible(e);
   };
 
   //Obtengo item del imput
   addValue(e) {
-    const htmlParent = e.target.parentElement.querySelector('input');
-    this.setStateDatos(htmlParent.id, htmlParent.value);
+    const html = e.target;
+
+    //Seteo variables del state
+    this.setStateDatos(html.id, html.value);
+
+    //Cargo select de ciuades
+    if (html.id === 'empresa') {
+      this.agregarSelectCiudad(Number(html.value));
+    }
+
     //Valido contenido
     this.btnVisible(e);
+  }
+
+  agregarSelectCiudad(id) {
+    const empresaSelect = this.props.empresas.filter(e => e.empresa === id);
+    let ciudades = [];
+
+    empresaSelect.forEach(e => {
+      let array = this.props.ciudades.find(c => c.id === e.ciudad) || [];
+
+      ciudades = [...ciudades, array];
+    });
+
+    this.setStateDatos('ciudades', ciudades);
   }
 
   //Valido datos del formulario.
@@ -91,50 +117,47 @@ export class ToDoItem extends React.Component {
             <label htmlFor="empresa" className="form-label">
               Empresa:
             </label>
-            <input
-              type="text"
+            <select
+              className="form-select"
               id="empresa"
-              className="form-control"
-              placeholder="Empresa"
               onChange={e => this.addValue(e)}
               onKeyDown={e => this.addValue(e)}
-              value={this.state.empresa}
-              required
-            />
+              required>
+              <option value="0">Seleccione</option>
+              {this.props.emp.map((e, index) => {
+                const { nombre, id } = e;
+                return (
+                  <option key={index} value={id}>
+                    {nombre}
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
           <div className="datos mb-3">
             <label htmlFor="ciudad" className="form-label">
               Ciudad:
             </label>
-            <input
-              type="text"
+            <select
+              className="form-select"
               id="ciudad"
-              className="form-control"
-              placeholder="Ciudad"
               onChange={e => this.addValue(e)}
               onKeyDown={e => this.addValue(e)}
-              value={this.state.ciudad}
-              required
-            />
-          </div>
+              required>
+              <option value="0">Seleccione</option>
+              {this.state.ciudades.map((c, index) => {
+                const { nombre, id, pais } = c;
+                const pc = this.props.paises.filter(c => c.id === pais) || [];
 
-          <div className="datos mb-3">
-            <label htmlFor="pais" className="form-label">
-              Pais:
-            </label>
-            <input
-              type="text"
-              id="pais"
-              className="form-control"
-              placeholder="Pais"
-              onChange={e => this.addValue(e)}
-              onKeyDown={e => this.addValue(e)}
-              value={this.state.pais}
-              required
-            />
+                return (
+                  <option key={index} value={id}>
+                    {nombre} - {pc[0].nombre}
+                  </option>
+                );
+              })}
+            </select>
           </div>
-
           <div className="d-grid gap-2 col-12 mx-auto">
             <button
               disabled={this.state.visible}

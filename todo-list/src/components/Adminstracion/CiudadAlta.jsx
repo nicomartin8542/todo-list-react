@@ -132,14 +132,14 @@ export class CiudadAlta extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.listado.map((c, index) => {
+                {this.props.listado.map(c => {
                   const { nombre, pais, id } = c;
-                  let paisNombre = this.props.paises.filter(p => p.id === pais);
+                  let paisNombre = this.props.paises.find(p => p.id === pais);
 
                   return (
                     <tr key={id}>
                       <td>{nombre}</td>
-                      <td>{paisNombre[0].nombre}</td>
+                      <td>{paisNombre.nombre}</td>
                       <td>
                         <button
                           className="btn btn-danger"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { alertaBorrar } from '../utils/alerts';
+import { alertaBorrar, alertaError } from '../utils/alerts';
 import { EmpresaAlta } from '../components/Adminstracion/EmpresaAlta';
 
 export class Empresas extends Component {
@@ -9,6 +9,8 @@ export class Empresas extends Component {
       empresas: [],
       ciudades: [],
       paises: [],
+      emp: [],
+      tasks: [],
     };
   }
 
@@ -22,10 +24,15 @@ export class Empresas extends Component {
     const empresaStorge = JSON.parse(localStorage.getItem('empresas')) || [];
     const ciudadesStorge = JSON.parse(localStorage.getItem('ciudades')) || [];
     const paisesStorge = JSON.parse(localStorage.getItem('paises')) || [];
+    const empStorge = JSON.parse(localStorage.getItem('emp')) || [];
+    const tasksStorge = JSON.parse(localStorage.getItem('tasks')) || [];
+
     this.setState({
       empresas: empresaStorge,
       ciudades: ciudadesStorge,
       paises: paisesStorge,
+      emp: empStorge,
+      tasks: tasksStorge,
     });
   }
 
@@ -37,10 +44,21 @@ export class Empresas extends Component {
   };
 
   //Elimino Paises
-  eliminarEmpresas = id => {
+  eliminarEmpresas = (id, empresa, ciudad) => {
+    const empresaTask = this.state.tasks.some(
+      rsp => rsp.empresa === empresa && rsp.ciudad === ciudad,
+    );
+
     let items = JSON.parse(localStorage.getItem('empresas')).filter(
       item => item.id !== id,
     );
+
+    if (empresaTask) {
+      alertaError(
+        'La empresa que desea eliminar esta asociado a un puesto de trabajo. Verifique y vuelva a intentar',
+      );
+      return;
+    }
 
     //Muestro alerta
     alertaBorrar().then(resp => {
@@ -62,6 +80,7 @@ export class Empresas extends Component {
           eliminarEmpresas={this.eliminarEmpresas}
           paises={this.state.paises}
           ciudades={this.state.ciudades}
+          emp={this.state.emp}
         />
       </>
     );

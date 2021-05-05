@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { validarImputForm } from '../../utils/util';
 
 export class EmpresaAlta extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      empresa: '',
+      empresa: 0,
       ciudades: [],
       ciudad: 0,
       pais: 0,
@@ -15,18 +16,13 @@ export class EmpresaAlta extends Component {
 
   //Obtengo item del imput
   addValue(e) {
-    let htmlParent;
-    if (e.target.id !== 'pais' && e.target.id !== 'ciudad') {
-      htmlParent = e.target.parentElement.querySelector('input');
-    } else {
-      htmlParent = e.target;
-    }
+    let htmlValue = e.target;
 
     if (e.target.id === 'pais') {
       this.cargarCiudades(e);
     }
 
-    this.setStateDatos(htmlParent.id, htmlParent.value);
+    this.setStateDatos(htmlValue.id, htmlValue.value);
     //Valido contenido
     this.btnVisible(e);
   }
@@ -57,7 +53,7 @@ export class EmpresaAlta extends Component {
 
     const empresaObj = {
       id: new Date().getTime(),
-      nombre: empresa,
+      empresa: Number(empresa),
       ciudad: Number(ciudad),
       pais: Number(pais),
     };
@@ -89,20 +85,32 @@ export class EmpresaAlta extends Component {
               Agregar Empresas <hr />
             </h2>
           </div>
-          <div className="datos mb-3">
-            <label htmlFor="empresa" className="form-label">
-              Empresa:
-            </label>
-            <input
-              type="text"
+          <div className="datos input-group mb-3">
+            <select
+              className="form-select"
               id="empresa"
-              className="form-control"
-              placeholder="Empresa"
+              name="empresa"
               onChange={e => this.addValue(e)}
               onKeyDown={e => this.addValue(e)}
-              value={this.state.empresa}
-              required
-            />
+              required>
+              <option value="0">Empresas</option>
+              {this.props.emp.map(e => {
+                const { nombre, id } = e;
+                return (
+                  <option key={id} value={id}>
+                    {nombre}
+                  </option>
+                );
+              })}
+            </select>
+
+            <Link
+              className="btn btn-success"
+              type="button"
+              id="button-addon2"
+              to="/emp">
+              Agregar
+            </Link>
           </div>
 
           <div className="datos mb-3">
@@ -172,20 +180,27 @@ export class EmpresaAlta extends Component {
               </thead>
               <tbody>
                 {this.props.listado.map((e, index) => {
-                  const { nombre, pais, ciudad, id } = e;
+                  const { empresa, pais, ciudad, id } = e;
                   let paisNombre = this.props.paises.filter(p => p.id === pais);
-                  let ciudadNombre = this.state.ciudades.filter(
+                  let empEmpresa = this.props.emp.filter(
+                    emp => emp.id === Number(empresa),
+                  );
+                  let ciudadNombre = this.props.ciudades.filter(
                     c => c.id === ciudad,
                   );
                   return (
-                    <tr key={id}>
-                      <td>{nombre}</td>
+                    <tr key={index}>
+                      <td>{empEmpresa[0].nombre}</td>
                       <td>{paisNombre[0].nombre}</td>
-                      <td>{ciudadNombre.length > 0 ? [0].nombre : ''}</td>
+                      <td>
+                        {ciudadNombre.length > 0 ? ciudadNombre[0].nombre : ''}
+                      </td>
                       <td>
                         <button
                           className="btn btn-danger"
-                          onClick={() => this.props.eliminarEmpresas(id)}>
+                          onClick={() =>
+                            this.props.eliminarEmpresas(id, empresa, ciudad)
+                          }>
                           <i className="fa fa-trash"></i>
                         </button>
                       </td>

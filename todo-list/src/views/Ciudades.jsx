@@ -12,7 +12,7 @@ export class Ciudades extends React.Component {
     };
   }
 
-  //Guardo datos en localStorage
+  //Guardo datos en localStorage si se actualizo el state
   componentDidUpdate() {
     localStorage.setItem('ciudades', JSON.stringify(this.state.ciudades));
   }
