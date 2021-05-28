@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 export const PageNoFound = () => (
   <div className="paginaNoEncontrada">
-    <p>Pagina no encontrada</p>
+    <p>Page not found</p>
     <Link className="btn btn-success" to="/">
-      Volver Al inicio
+      Back to Home
     </Link>
   </div>
 );
