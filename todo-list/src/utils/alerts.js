@@ -9,23 +9,27 @@ const MySwal = withReactContent(Swal);
 export const alertaError = mensaje => {
   MySwal.fire({
     icon: 'error',
-    title: 'Error al Eliminar',
+    title: 'Error',
     text: mensaje,
   });
 };
 
 export const alertaBorrar = () => {
   return MySwal.fire({
-    title: '¿Seguro que desea borrar?',
-    text: 'Una vez eliminado no se podra recuperar el dato.',
+    title: '¿You sure want to delete?',
+    text: 'Once deleted, the data cannot be recovered.',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Si, borrar!',
+    confirmButtonText: 'Yes, delet!',
   }).then(result => {
     if (result.isConfirmed) {
-      MySwal.fire('Eliminado!', 'El registro se borro con exito.', 'success');
+      MySwal.fire(
+        'Deleted!',
+        'The record was deleted successfully.',
+        'success',
+      );
       return true;
     } else {
       return false;

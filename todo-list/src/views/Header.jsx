@@ -6,7 +6,7 @@ export const Header = () => (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark ">
       <div className="container-fluid ">
         <Link className="navbar-brand" to="/">
-          Listas de Trabajos
+          Work List
         </Link>
         <button
           className="navbar-toggler"
@@ -26,18 +26,18 @@ export const Header = () => (
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/paises">
-                Paises
+              <Link className="nav-link" to="/countries">
+                Countries
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/ciudades">
-                Ciudades
+              <Link className="nav-link" to="/places">
+                Places
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/empresas">
-                Empresas
+              <Link className="nav-link" to="/organizations">
+                Organizations
               </Link>
             </li>
           </ul>
